@@ -8,17 +8,21 @@ class DatabaseNode;
 
 class OriginalNameDatabase {
 public:
-	OriginalNameDatabase(const char* fileUrl);
+	static OriginalNameDatabase* getInstance();
+	
 		
 	std::string getOriginalName(const std::string& writtenString) const;
 	void saveNodeToData(const DatabaseNode& node);
 private:
+	OriginalNameDatabase(const char* fileUrl);
+	~OriginalNameDatabase();
 	void loadFileToData();
 	
 	void saveNodeToFile(const DatabaseNode& node);
 	void saveToFile();
 	
 private:
+	OriginalNameDatabase* mInstance;
 	std::string mDatabaseFileUrl;
 	std::vector<DatabaseNode> mData;
 

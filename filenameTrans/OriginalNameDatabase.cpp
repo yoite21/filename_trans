@@ -4,6 +4,20 @@
 #include <algorithm>
 #include <cerrno>
 
+OriginalNameDatabase* OriginalNameDatabase::getInstance()
+{
+	if ( mInstance == NULL )
+	{
+		mInstance = new OriginalNameDatabase("db.txt");
+	}
+
+	return mInstance;
+}
+
+OriginalNameDatabase::~OriginalNameDatabase()
+{
+	delete mInstance;
+}
 
 OriginalNameDatabase::OriginalNameDatabase(const char* fileUrl)
 	:mDatabaseFileUrl(fileUrl)
