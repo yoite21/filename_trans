@@ -6,6 +6,7 @@
 #include <strsafe.h>
 #include <vector>
 #include <Shlwapi.h>
+#include <algorithm>
 
 // db에 들어갈 내용
 // 1. 원본이름검색
@@ -30,9 +31,8 @@ void makeExistFilename(std::string& filename);
 
 int testMain()
 {
-	OriginalNameDatabase db("db.txt");
 	
-	db.saveNodeToData(DatabaseNode("qwer/원문2/줄임2"));
+	OriginalNameDatabase::getInstance()->saveNodeToData(DatabaseNode("qwer/원문2/줄임2"));
 
 
 	return 0;
@@ -115,8 +115,78 @@ void changeFilenameInDirectory(const std::string& directoryUrl)
 
 std::string makeNewFilename(const char* filename)
 {
-	std::string retv;
 	// db, 사용자의 입력을 사용하여 새 파일이름을 만들어 return할것
+	// 입력 예제 : (asdf)[fghj]qwer(asdf)[qwer]
+	std::string str(filename);
+	int sectionStartIndex = 0;
+	while(1)
+	{
+		// (), [] 으로 감싼 부분 찾기
+		int roundBracketLeftIndex = str.find("(",sectionStartIndex);
+		int squareBracketLeftIndex = str.find("[",sectionStartIndex);
+		
 
+		// 시작위치부터 처음 parenthese가 시작하는 위치사이에
+		// 내용이 있으면 해당 구역을 section 으로 생각
+		// 없으면 괄호시작을 section 의 시작으로 생각해서 끝지점 찾기
+		
+		// round, square 의 값이 npos 일 경우를 생각해야 하고
+		// 여기서 round, square 어떤것이 앞인지 찾는것도 좋을듯
+		std::string tmp(str.substr(sectionStartIndex,roundBracketLeftIndex<squareBracketLeftIndex?roundBracketLeftIndex:squareBracketLeftIndex));
+		tmp.erase(std::remove(tmp.begin(),tmp.end()," "));
+
+		int sectionEndIndex;
+		if ( tmp.empty() )
+		{
+			sectionStartIndex = roundBracketLeftIndex<squareBracketLeftIndex?roundBracketLeftIndex:squareBracketLeftIndex;
+
+			int roundBracketRightIndex = std::string::npos;
+			int squareBracketRightIndex = std::string::npos;
+			if ( roundBracketLeftIndex != std::string::npos )
+			{
+				roundBracketRightIndex = str.find(")",sectionStartIndex);
+			}
+			if ( squareBracketLeftIndex != std::string::npos )
+			{
+				squareBracketRightIndex = str.find("]",sectionStartIndex);
+			}
+
+			int parentheseEndIndex;
+			if ( roundBracketLeftIndex == std::string::npos )
+			{
+				if ( squareBracketLeftIndex == std::string::npos )
+				{
+					//
+					break;
+				}
+				else
+				{
+					parentheseEndIndex = roundBracketRightIndex;
+
+				}
+			}
+			else
+			{
+				if ( squareBracketLeftIndex == std::string::npos )
+				{
+				
+				}
+				else
+				{
+
+				}
+			}
+		}
+		else
+		{
+			sectionEndIndex = roundBracketLeftIndex<squareBracketLeftIndex?roundBracketLeftIndex:squareBracketLeftIndex - 1;
+		}
+		
+		// section start index, section end index 로 그 사이값을 통해
+		// 묻고 해결을 해서 retv에 저장
+		
+	}
+
+	std::string retv;
 	return retv;
 }
