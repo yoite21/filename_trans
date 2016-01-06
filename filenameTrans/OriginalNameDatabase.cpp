@@ -87,19 +87,19 @@ void OriginalNameDatabase::loadFileToData()
 
 		if ( !bufString.empty() )
 		{
-			mData.push_back(DatabaseNode(bufString));
+			mData.push_back(OriginalNameDatabaseNode(bufString));
 		}
 	}
 	
 	fclose(fp);
 }
 
-void OriginalNameDatabase::saveNodeToData(const DatabaseNode& node)
+void OriginalNameDatabase::saveNodeToData(const OriginalNameDatabaseNode& node)
 {
 	mData.push_back(node);
 	saveNodeToFile(node);
 }
-void OriginalNameDatabase::saveNodeToFile(const DatabaseNode& node)
+void OriginalNameDatabase::saveNodeToFile(const OriginalNameDatabaseNode& node)
 {
 	FILE* fp = fopen(mDatabaseFileUrl.c_str(), "a");
 	fprintf(fp, "%s/%s/%s\n",node.mSearchName.c_str(), node.mShortName.c_str(), node.mOriginalName.c_str());
@@ -127,13 +127,13 @@ void OriginalNameDatabase::saveToFile()
 }
 
 
-// DatabaseNode
+// OriginalNameDatabaseNode
 
-DatabaseNode::DatabaseNode()
+OriginalNameDatabaseNode::OriginalNameDatabaseNode()
 {
 }
 
-DatabaseNode::DatabaseNode(const std::string& str)
+OriginalNameDatabaseNode::OriginalNameDatabaseNode(const std::string& str)
 {
 	// 구분자는 / 임
 	int index[2];
@@ -147,7 +147,7 @@ DatabaseNode::DatabaseNode(const std::string& str)
 	mOriginalName = str.substr(index[1]+1);
 }
 
-DatabaseNode::DatabaseNode(const char* searchName, const char* originalName, const char* shortName)
+OriginalNameDatabaseNode::OriginalNameDatabaseNode(const char* searchName, const char* originalName, const char* shortName)
 	: mOriginalName(originalName),
 	mShortName(shortName),
 	mSearchName(searchName)
