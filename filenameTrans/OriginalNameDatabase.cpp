@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cerrno>
 
+OriginalNameDatabase* OriginalNameDatabase::mInstance = NULL;
+
 OriginalNameDatabase* OriginalNameDatabase::getInstance()
 {
 	if ( mInstance == NULL )

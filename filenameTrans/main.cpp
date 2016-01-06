@@ -32,7 +32,7 @@ void makeExistFilename(std::string& filename);
 int testMain()
 {
 	
-	OriginalNameDatabase::getInstance()->saveNodeToData(DatabaseNode("qwer/원문2/줄임2"));
+	OriginalNameDatabase::getInstance()->saveNodeToData(OriginalNameDatabaseNode("qwer/원문2/줄임2"));
 
 
 	return 0;
@@ -132,8 +132,9 @@ std::string makeNewFilename(const char* filename)
 		
 		// round, square 의 값이 npos 일 경우를 생각해야 하고
 		// 여기서 round, square 어떤것이 앞인지 찾는것도 좋을듯
-		std::string tmp(str.substr(sectionStartIndex,roundBracketLeftIndex<squareBracketLeftIndex?roundBracketLeftIndex:squareBracketLeftIndex));
-		tmp.erase(std::remove(tmp.begin(),tmp.end()," "));
+		std::string tmp(str.substr(sectionStartIndex, (roundBracketLeftIndex<squareBracketLeftIndex) ? roundBracketLeftIndex : squareBracketLeftIndex));
+		// 이거 머죠... 
+		tmp.erase(std::remove(tmp.begin(),tmp.end(),' '),tmp.end());
 
 		int sectionEndIndex;
 		if ( tmp.empty() )
